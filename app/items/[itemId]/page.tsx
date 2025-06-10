@@ -1,12 +1,11 @@
 "use client";
 
 import { useRouter, useParams } from "next/navigation";
-import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import Container from "@/components/ui/Container";
-import ToDoInput from "@/components/ui/ToDoInput";
 import LayeredButton from "@/components/ui/LayeredButton";
 import useSWR, { mutate } from "swr";
-import { API_URL } from "@/constants/common";
+import { API_URL, IMAGE_API_URL } from "@/constants/common";
 import { fetcher } from "@/lib/fetcher";
 import { Item } from "@/types/Items";
 import DetailTodoItem from "@/components/detail/DetailTodoItem";
@@ -22,19 +21,24 @@ export default function ItemDetailPage() {
     fetcher
   );
 
-  console.log(todoDetailData);
-
   // 폼 입력 상태
   const [name, setName] = useState(todoDetailData?.name || "");
   const [memo, setMemo] = useState(todoDetailData?.memo || "");
-  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imageUrl, setImageUrl] = useState<string | null>(
+    todoDetailData?.imageUrl || null
+  );
   const [imagePreview, setImagePreview] = useState<string>(
     todoDetailData?.imageUrl || ""
   );
 
+  useEffect(() => {
+    setName(todoDetailData?.name || "");
+    setMemo(todoDetailData?.memo || "");
+    setImagePreview(todoDetailData?.imageUrl || "");
+  }, [todoDetailData]);
   // 이미지 파일 처리
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -50,39 +54,55 @@ export default function ItemDetailPage() {
       return;
     }
 
-    setImageFile(file);
     setImagePreview(URL.createObjectURL(file));
-  };
 
-  // const handleFile = (e: ChangeEvent<HTMLInputElement>) => {
-  //   const file = e.target.files?.[0];
-  //   if (!file) return;
-  //   if (file.size > 5 * 1024 * 1024) {
-  //     alert("5MB 이하만 업로드 가능합니다.");
-  //     return;
-  //   }
-  //   if (!/^[a-zA-Z0-9_\-]+\.(png|jpe?g)$/i.test(file.name)) {
-  //     alert("영어 파일명(.png, .jpg)만 허용됩니다.");
-  //     return;
-  //   }
-  //   const reader = new FileReader();
-  //   reader.onload = () => setImageUrl(reader.result as string);
-  //   reader.readAsDataURL(file);
-  // };
-
-  // 수정완료
-  const handleEdit = async () => {
     const formData = new FormData();
-    formData.append("name", name);
-    formData.append("isCompleted", String(todoDetailData?.isCompleted));
-    formData.append("memo", memo);
-    if (imageFile) formData.append("image", imageFile);
+    formData.append("image", file);
 
-    await fetch(`${API_URL}/${todoDetailData?.id}`, {
-      method: "PATCH",
+    // 2) 업로드 API 호출
+    const res = await fetch(`${IMAGE_API_URL}/upload`, {
+      method: "POST",
       body: formData,
     });
-    mutate(API_URL);
+
+    if (!res.ok) throw new Error("이미지 업로드 실패");
+    const data = (await res.json()) as { url: string };
+
+    // 3) 반환된 URL로 state 갱신
+    setImageUrl(data?.url);
+  };
+
+  // 파일을 읽어 base64 바이너리 문자열로 변환
+  const fileToBase64 = (file: File): Promise<string> =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const dataUrl = reader.result as string;
+        // "data:<mime>;base64,<base64>" 에서 쉼표 뒤만 취함
+        resolve(dataUrl.split(",")[1]);
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+
+  const handleMemoChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    setMemo(e.target.value);
+  };
+  // 수정완료
+  const handleEdit = async () => {
+    await fetch(`${API_URL}/${todoDetailData?.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name,
+        memo,
+        imageUrl: imageUrl || "",
+        isCompleted: todoDetailData?.isCompleted,
+      }),
+    });
+    mutate(`${API_URL}/${todoDetailData?.id}`);
     router.push("/");
   };
 
@@ -154,20 +174,20 @@ export default function ItemDetailPage() {
             className="py-6 px-4 rounded-[24px] h-[311px] flex flex-col text-center justify-center"
             style={{ backgroundImage: "url('/images/memo.svg')" }}
           >
-            <h3 className="text-amber-800 font-bold leading-none">Memo</h3>
-            {/* <textarea
-              value={memo}
-              onChange={(e) => setMemo(e.target.value)}
-              className="flex-1 resize-none bg-transparent outline-none overflow-y-auto pr-2 text-center"
-            /> */}
-            <OverflowTextarea />
+            <h3 className="text-amber-800 mb-4 font-bold leading-none">Memo</h3>
+
+            <OverflowTextarea onChange={handleMemoChange} text={memo} />
           </div>
         </div>
 
         {/* 하단 버튼 */}
 
         <div className="flex justify-end mt-6 space-x-4">
-          <LayeredButton variant="primary" size="lg">
+          <LayeredButton
+            variant={isActive ? "edit_done_active" : "primary"}
+            size="lg"
+            onClick={handleEdit}
+          >
             <Image
               src="/icons/check.svg"
               alt="todo plus button"

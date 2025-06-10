@@ -1,7 +1,13 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
 
-export default function OverflowTextarea() {
+export default function OverflowTextarea({
+  onChange,
+  text,
+}: {
+  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  text: string;
+}) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [isOverflow, setIsOverflow] = useState(false);
 
@@ -29,6 +35,8 @@ export default function OverflowTextarea() {
         ref={textareaRef}
         className="content-center text-center scrollbar-yellow w-full max-h-[229px] h-full p-2 rounded resize-none overflow-y-auto scrollbar-thin scrollbar-thumb-yellow-400 scrollbar-track-yellow-100 outline-none focus:outline-none"
         placeholder="내용을 입력하세요..."
+        onChange={onChange}
+        value={text}
       />
     </div>
   );
