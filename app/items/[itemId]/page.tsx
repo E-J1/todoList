@@ -32,6 +32,7 @@ export default function ItemDetailPage() {
   );
 
   useEffect(() => {
+    console.log(todoDetailData);
     setName(todoDetailData?.name || "");
     setMemo(todoDetailData?.memo || "");
     setImagePreview(todoDetailData?.imageUrl || "");
@@ -130,7 +131,7 @@ export default function ItemDetailPage() {
   return (
     <Container className="py-4 sm:py-6 bg-white min-h-[calc(100vh-64px)]">
       <div className="max-w-[996px] mx-auto">
-        <DetailTodoItem todo={todoDetailData} />
+        <DetailTodoItem todo={todoDetailData} name={name} setName={setName} />
         <div className="grid  grid-cols-1 lg:grid-cols-[384px_588px] gap-6 mt-4 sm:mt-6">
           {/* 좌측: 이미지 업로드 영역 */}
           <div className="relative border-2 border-dashed border-slate-300 bg-slate-50 rounded-[24px] lg:max-w-[384px] h-[311px] flex items-center justify-center overflow-hidden">

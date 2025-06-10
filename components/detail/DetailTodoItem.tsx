@@ -4,13 +4,20 @@ import Image from "next/image";
 import { Item } from "../../types/Items";
 import { API_URL } from "@/constants/common";
 import { mutate } from "swr";
+import { Dispatch, SetStateAction } from "react";
 
 interface Props {
   todo: Item;
+  name: string;
+  setName: Dispatch<SetStateAction<string>>;
 }
 
-export default function DetailTodoItem({ todo }: Props) {
+export default function DetailTodoItem({ todo, name, setName }: Props) {
   const isCompleted = todo?.isCompleted;
+
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setName(e.target.value);
+  };
 
   // 아이콘 파일 경로
   const iconSrc = isCompleted
@@ -47,9 +54,12 @@ export default function DetailTodoItem({ todo }: Props) {
       >
         <Image src={iconSrc} alt={iconAlt} width={32} height={32} />
       </button>
-      <span className="underline detail-todo text-xl font-bold">
-        {todo.name}
-      </span>
+      <input
+        style={{ width: `${Math.max(name?.length, 1)}ch` }}
+        className="underline detail-todo text-xl font-bold"
+        value={name}
+        onChange={handleNameChange}
+      />
     </li>
   );
 }
