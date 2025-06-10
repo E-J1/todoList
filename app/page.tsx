@@ -2,11 +2,11 @@
 
 import Container from "@/components/ui/Container";
 import TodoForm from "@/components/main/TodoForm";
-import TodoList from "@/components/TodoList";
+import TodoList from "@/components/main/TodoList";
 
 export default function HomePage() {
   return (
-    <Container className="py-4 sm:py-6 min-h-[calc(100vh-64px)]">
+    <Container className="py-4 sm:py-6 ">
       {/* 입력 폼 */}
       <TodoForm />
       {/* 투두/완료 그리드 */}

@@ -57,7 +57,7 @@ export default function RootLayout({
             </a>
           </Container>
         </header>
-        <main className="bg-gray-50">{children}</main>
+        <main className="bg-gray-50 min-h-[calc(100vh-64px)]">{children}</main>
       </body>
     </html>
   );
