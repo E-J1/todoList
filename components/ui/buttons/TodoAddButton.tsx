@@ -34,7 +34,7 @@ export default function TodoAddButton({ isActive = false, onClick }: Props) {
             isActive ? "invert-0" : "invert"
           }`}
         />
-        <span className="hidden sm:inline">추가하기</span>
+        <span className="hidden md:inline">추가하기</span>
       </LayeredButton>
     </div>
   );

@@ -35,7 +35,7 @@ export default function RootLayout({
     <html lang="ko" className={nanum.variable}>
       <body className="min-h-screen text-slate-900">
         <header className="border-b border-b-slate-200 bg-white">
-          <Container className="desktop:max-w-[1200px] tablet:max-w-tablet flex h-[60px] items-center">
+          <Container className="md:max-w-tablet flex h-[60px] items-center lg:max-w-[1200px]">
             <a href="/">
               <picture>
                 {/* 모바일(≤375px)에서는 logo_s */}

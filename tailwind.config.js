@@ -3,23 +3,7 @@ const plugin = require("tailwindcss/plugin");
 module.exports = {
   content: ["./app/**/*.{js,ts,jsx,tsx}", "./components/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    screens: {
-      sm: "375px",
-      md: "744px",
-      lg: "1200px",
-      // => @media (min-width: 1280px) { ... }
-      desktop: "1200px", // ≥1200px
-      tablet: "744px", // ≥744px
-      mobile: "375px", // ≥375px 에서 mobile: 동작
-    },
-    // screens: {
-    // },
     extend: {
-      maxWidth: {
-        desktop: "1200px",
-        tablet: "744px",
-        mobile: "375px",
-      },
       fontFamily: {
         sans: ["var(--font-primary)", "sans-serif"],
       },

@@ -10,7 +10,7 @@ export default function HomePage() {
       {/* 입력 폼 */}
       <TodoForm />
       {/* 투두/완료 그리드 */}
-      <div className="desktop:grid-cols-2 grid grid-cols-1 gap-12">
+      <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
         {/* TO DO 컬럼 */}
         <TodoList isCompleted={false} />
 

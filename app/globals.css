@@ -33,8 +33,13 @@
   }
 }
 
+/* 
+  desktop: "1200px",
+  tablet: "744px",
+  mobile: "375px",
+ */
 @theme {
-  --breakpoint-desktop: 75rem;
-  --breakpoint-tablet: 47rem;
-  --breakpoint-mobile: 24rem;
+  --breakpoint-lg: 1200px;
+  --breakpoint-md: 744px;
+  --breakpoint-sm: 375px;
 }
