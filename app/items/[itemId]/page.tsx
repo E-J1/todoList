@@ -18,17 +18,17 @@ export default function ItemDetailPage() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { data: todoDetailData } = useSWR<Item>(
     `${API_URL}/${itemId}`,
-    fetcher
+    fetcher,
   );
 
   // 폼 입력 상태
   const [name, setName] = useState(todoDetailData?.name || "");
   const [memo, setMemo] = useState(todoDetailData?.memo || "");
   const [imageUrl, setImageUrl] = useState<string | null>(
-    todoDetailData?.imageUrl || null
+    todoDetailData?.imageUrl || null,
   );
   const [imagePreview, setImagePreview] = useState<string>(
-    todoDetailData?.imageUrl || ""
+    todoDetailData?.imageUrl || "",
   );
 
   useEffect(() => {
@@ -129,17 +129,17 @@ export default function ItemDetailPage() {
   }
 
   return (
-    <Container className="py-4 sm:py-6 bg-white min-h-[calc(100vh-64px)]">
-      <div className="max-w-[996px] mx-auto">
+    <Container className="min-h-[calc(100vh-64px)] bg-white py-4 sm:py-6">
+      <div className="mx-auto max-w-[996px]">
         <DetailTodoItem todo={todoDetailData} name={name} setName={setName} />
-        <div className="grid  grid-cols-1 lg:grid-cols-[384px_588px] gap-6 mt-4 sm:mt-6">
+        <div className="mt-4 grid grid-cols-1 gap-6 sm:mt-6 lg:grid-cols-[384px_588px]">
           {/* 좌측: 이미지 업로드 영역 */}
-          <div className="relative border-2 border-dashed border-slate-300 bg-slate-50 rounded-[24px] lg:max-w-[384px] h-[311px] flex items-center justify-center overflow-hidden">
+          <div className="relative flex h-[311px] items-center justify-center overflow-hidden rounded-[24px] border-2 border-dashed border-slate-300 bg-slate-50 lg:max-w-[384px]">
             {imagePreview ? (
               <img
                 src={imagePreview}
                 alt="미리보기"
-                className="object-contain max-h-full h-full max-w-full"
+                className="h-full max-h-full max-w-full object-contain"
               />
             ) : (
               <Image
@@ -151,7 +151,7 @@ export default function ItemDetailPage() {
             )}
             <button
               type="button"
-              className="absolute w-16 h-16 bottom-4 right-4 bg-slate-200 rounded-full flex items-center justify-center cursor-pointer"
+              className="absolute right-4 bottom-4 flex h-16 w-16 cursor-pointer items-center justify-center rounded-full bg-slate-200"
               onClick={() => fileInputRef.current?.click()}
             >
               <Image
@@ -172,10 +172,10 @@ export default function ItemDetailPage() {
 
           {/* 우측: 메모 입력 */}
           <div
-            className="py-6 px-4 rounded-[24px] h-[311px] flex flex-col text-center justify-center"
+            className="flex h-[311px] flex-col justify-center rounded-[24px] px-4 py-6 text-center"
             style={{ backgroundImage: "url('/images/memo.svg')" }}
           >
-            <h3 className="text-amber-800 mb-4 font-bold leading-none">Memo</h3>
+            <h3 className="mb-4 leading-none font-bold text-amber-800">Memo</h3>
 
             <OverflowTextarea onChange={handleMemoChange} text={memo} />
           </div>
@@ -183,7 +183,7 @@ export default function ItemDetailPage() {
 
         {/* 하단 버튼 */}
 
-        <div className="flex justify-end mt-6 space-x-4">
+        <div className="mt-6 flex justify-end space-x-4">
           <LayeredButton
             variant={isActive ? "edit_done_active" : "primary"}
             size="lg"

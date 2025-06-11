@@ -33,9 +33,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko" className={nanum.variable}>
-      <body className="text-slate-900 min-h-screen">
-        <header className="bg-white border-b border-b-slate-200 ">
-          <Container className="flex items-center  desktop:max-w-[1200px]  h-[60px] tablet:max-w-tablet">
+      <body className="min-h-screen text-slate-900">
+        <header className="border-b border-b-slate-200 bg-white">
+          <Container className="desktop:max-w-[1200px] tablet:max-w-tablet flex h-[60px] items-center">
             <a href="/">
               <picture>
                 {/* 모바일(≤375px)에서는 logo_s */}
@@ -57,7 +57,7 @@ export default function RootLayout({
             </a>
           </Container>
         </header>
-        <main className="bg-gray-50 min-h-[calc(100vh-64px)]">{children}</main>
+        <main className="min-h-[calc(100vh-64px)] bg-gray-50">{children}</main>
       </body>
     </html>
   );
