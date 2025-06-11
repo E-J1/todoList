@@ -32,7 +32,6 @@ export default function ItemDetailPage() {
   );
 
   useEffect(() => {
-    console.log(todoDetailData);
     setName(todoDetailData?.name || "");
     setMemo(todoDetailData?.memo || "");
     setImagePreview(todoDetailData?.imageUrl || "");
@@ -43,9 +42,10 @@ export default function ItemDetailPage() {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    const baseName = file.name.replace(/\.[^/.]+$/, "");
     // 이름 패턴 & 크기 체크
-    if (!/^[A-Za-z0-9._-]+$/.test(file.name)) {
-      alert("파일 이름은 영문·숫자·._-만 가능합니다.");
+    if (!/^[A-Za-z]+$/.test(baseName)) {
+      alert("파일 이름은 영문으로만 이루어져있어야 합니다.");
       e.target.value = "";
       return;
     }
@@ -194,9 +194,6 @@ export default function ItemDetailPage() {
               alt="todo plus button"
               width={16}
               height={16}
-              className={`object-contain filter ${
-                isActive ? "invert-0" : "invert"
-              }`}
             />
             수정 완료
           </LayeredButton>
