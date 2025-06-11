@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@tailwind utilities;
 
 @font-face {
   font-family: "NanumSquare";
@@ -32,4 +31,10 @@
     background-color: #facc15; /* yellow-400 */
     border-radius: 9999px;
   }
+}
+
+@theme {
+  --breakpoint-desktop: 75rem;
+  --breakpoint-tablet: 47rem;
+  --breakpoint-mobile: 24rem;
 }
