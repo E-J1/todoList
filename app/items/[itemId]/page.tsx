@@ -37,8 +37,8 @@ export default function ItemDetailPage() {
     setImagePreview(todoDetailData?.imageUrl || "");
     setImageUrl(todoDetailData?.imageUrl || "");
   }, [todoDetailData]);
-  // 이미지 파일 처리
 
+  // 이미지 파일 처리
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
