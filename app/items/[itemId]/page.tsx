@@ -35,6 +35,7 @@ export default function ItemDetailPage() {
     setName(todoDetailData?.name || "");
     setMemo(todoDetailData?.memo || "");
     setImagePreview(todoDetailData?.imageUrl || "");
+    setImageUrl(todoDetailData?.imageUrl || "");
   }, [todoDetailData]);
   // 이미지 파일 처리
 
@@ -73,22 +74,10 @@ export default function ItemDetailPage() {
     setImageUrl(data?.url);
   };
 
-  // 파일을 읽어 base64 바이너리 문자열로 변환
-  const fileToBase64 = (file: File): Promise<string> =>
-    new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => {
-        const dataUrl = reader.result as string;
-        // "data:<mime>;base64,<base64>" 에서 쉼표 뒤만 취함
-        resolve(dataUrl.split(",")[1]);
-      };
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
-    });
-
   const handleMemoChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setMemo(e.target.value);
   };
+
   // 수정완료
   const handleEdit = async () => {
     await fetch(`${API_URL}/${todoDetailData?.id}`, {
