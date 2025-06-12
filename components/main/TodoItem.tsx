@@ -34,12 +34,12 @@ export default function TodoItem({ todo }: Props) {
 
   return (
     <li
-      className={`flex items-center h-[50px] border-slate-900 rounded-[27px] border-2 px-3 text-slate-800 ${completedClass}`}
+      className={`flex h-[50px] items-center rounded-[27px] border-2 border-slate-900 px-3 text-slate-800 ${completedClass}`}
     >
       <button
         type="button"
         onClick={() => toggleTodo(todo)}
-        className={`w-[32px] h-[32px] rounded-full mr-4 cursor-pointer`}
+        className={`mr-4 h-[32px] w-[32px] flex-shrink-0 cursor-pointer rounded-full`}
       >
         <Image src={iconSrc} alt={iconAlt} width={32} height={32} />
       </button>
